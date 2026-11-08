@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TMT-A Spatial Memory Decomposition Experiment</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-title-group">
+        <div class="header-icon">T</div>
+        <div>
+          <h1 class="header-title">TMT-A Spatial Memory Experiment</h1>
+          <p class="header-subtitle">Cognitive Decomposition of Spatial Memory & Bottom-Up Visual Marking</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="/" class="nav-btn active">Experiment</a>
+        <a href="/analytics" class="nav-btn">Analytics & Trends</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Participant & Range Control Bar -->
+    <section class="control-bar">
+      <div class="participant-box">
+        <label for="participantName" class="participant-label">Participant Name:</label>
+        <input 
+          type="text" 
+          id="participantName" 
+          class="participant-input" 
+          placeholder="e.g. Jane Doe"
+          autocomplete="off"
+        >
+        <span class="privacy-pill" title="Your raw name is never stored. It is salted and hashed with SHA-256 into an anonymous ID (e.g. Anon-BD63B068).">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          SHA-256 Anonymized
+        </span>
+      </div>
+
+      <div class="target-range-badge">
+        <span class="target-range-label">Active Range:</span>
+        <span id="targetRangeVal" class="target-range-value">Loading...</span>
+        <button id="refreshRangeBtn" class="refresh-range-btn" title="Generate another random target range">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Experimental Mode Tabs -->
+    <section class="modes-grid">
+      <!-- Mode 1 -->
+      <div class="mode-card active" data-mode="1">
+        <div class="mode-card-header">
+          <span class="mode-card-title"><span class="mode-dot"></span> Mode 1: Normal</span>
+          <span class="mode-badge" style="background:#dcfce7; color:#16a34a;">Static + Lit</span>
+        </div>
+        <p class="mode-desc">Standard TMT-A. Targets light up green with trails. Positions remain static.</p>
+        <p class="mode-hypothesis">Hypothesis: Memory + bottom-up pop-out active (steepest latency drop).</p>
+      </div>
+
+      <!-- Mode 2 -->
+      <div class="mode-card" data-mode="2">
+        <div class="mode-card-header">
+          <span class="mode-card-title"><span class="mode-dot"></span> Mode 2: Memory Only</span>
+          <span class="mode-badge" style="background:#fef3c7; color:#d97706;">Static + Unlit</span>
+        </div>
+        <p class="mode-desc">All targets look identical (white). Correct clicks beep. Positions remain static.</p>
+        <p class="mode-hypothesis">Hypothesis: Layout familiarity active without pop-out cues (moderate drop).</p>
+      </div>
+
+      <!-- Mode 3 -->
+      <div class="mode-card" data-mode="3">
+        <div class="mode-card-header">
+          <span class="mode-card-title"><span class="mode-dot"></span> Mode 3: Bottom-Up Only</span>
+          <span class="mode-badge" style="background:#dbeafe; color:#2563eb;">Shuffled + Lit</span>
+        </div>
+        <p class="mode-desc">Completed targets stay lit. Uncompleted targets RESHUFFLE after every correct hit.</p>
+        <p class="mode-hypothesis">Hypothesis: Distractor count decreases, memory wiped (linear drop).</p>
+      </div>
+
+      <!-- Mode 4 -->
+      <div class="mode-card" data-mode="4">
+        <div class="mode-card-header">
+          <span class="mode-card-title"><span class="mode-dot"></span> Mode 4: Control Baseline</span>
+          <span class="mode-badge" style="background:#fee2e2; color:#dc2626;">Fully Shuffled</span>
+        </div>
+        <p class="mode-desc">ALL targets RESHUFFLE after every click, NONE light up. Beep confirmation.</p>
+        <p class="mode-hypothesis">Hypothesis: Pure visual search baseline (flat constant slope ~0).</p>
+      </div>
+    </section>
+
+    <!-- Experiment Arena & HUD -->
+    <div class="hud-panel">
+      <div class="hud-group">
+        <div class="hud-item">
+          <span class="hud-label">Next Target</span>
+          <span id="hudNextTarget" class="hud-value target-highlight">-</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Step Time</span>
+          <span id="hudStepTimer" class="hud-value timer">0.00s</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Total Time</span>
+          <span id="hudTotalTimer" class="hud-value">0.00s</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">Errors</span>
+          <span id="hudErrors" class="hud-value" style="color:#ef4444;">0</span>
+        </div>
+      </div>
+
+      <div class="hud-actions">
+        <button id="startTestBtn" class="btn-primary">START TEST</button>
+        <button id="resetTestBtn" class="btn-secondary" disabled>Reset</button>
+      </div>
+    </div>
+
+    <!-- Canvas Wrapper with Overlay and Corner First Target Badge -->
+    <div class="canvas-wrapper">
+      <canvas id="experimentCanvas"></canvas>
+
+      <!-- Floating First Target Corner Badge -->
+      <div id="cornerFirstTargetBadge" class="corner-first-target-badge" title="First target of the current sequence">
+        <div class="corner-badge-header">
+          <span class="corner-pulse-dot"></span>
+          <span>FIRST TARGET</span>
+        </div>
+        <div id="cornerFirstTargetNum" class="corner-badge-num">--</div>
+        <div id="cornerFirstTargetSub" class="corner-badge-sub">Sequence: -- &rarr; --</div>
+      </div>
+
+      <div id="canvasOverlay" class="canvas-overlay">
+        <h2 id="overlayModeTitle" class="overlay-title">Ready for Mode 1</h2>
+        <p id="overlayModeDesc" class="overlay-desc">
+          Click the sequential targets in ascending numerical order as quickly and accurately as possible.
+        </p>
+
+        <!-- Prominent First Target Banner in Overlay -->
+        <div class="overlay-start-callout">
+          <div class="callout-heading">START WITH TARGET</div>
+          <div id="overlayFirstTargetNum" class="callout-big-number">--</div>
+          <div id="overlaySequenceText" class="callout-subtext">Sequence: -- to --</div>
+        </div>
+
+        <ul class="overlay-rules">
+          <li><strong>Sequential Order:</strong> Look at the "Next Target" counter above and click targets sequentially.</li>
+          <li><strong>Sound Feedback:</strong> Turn on audio to hear confirmation beeps (especially in Unlit modes).</li>
+          <li><strong>No Guessing:</strong> Incorrect clicks register as errors and add search latency.</li>
+        </ul>
+        <button onclick="document.getElementById('startTestBtn').click()" class="btn-primary" style="padding: 12px 32px; font-size: 16px;">
+          Click Here or Press Start to Begin
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Results Summary Modal -->
+  <div id="resultsModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title">Test Completed!</h2>
+          <p id="modalModeTitle" class="modal-subtitle">Mode 1: Normal Static & Lit</p>
+        </div>
+        <button id="closeModalBtn" class="btn-secondary" style="padding: 6px 12px;">&times;</button>
+      </div>
+
+      <div class="metrics-summary-grid">
+        <div class="metric-card">
+          <div class="metric-card-label">Total Time</div>
+          <div id="modalTotalTime" class="metric-card-value">0.00s</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Mean Latency</div>
+          <div id="modalMeanTime" class="metric-card-value">0 ms</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Total Errors</div>
+          <div id="modalErrors" class="metric-card-value" style="color:#f87171;">0</div>
+        </div>
+      </div>
+
+      <!-- Mini Latency Plot -->
+      <div class="chart-container-box">
+        <div class="chart-title">Target Search Latency Curve (&Delta;t per step)</div>
+        <canvas id="modalChartCanvas"></canvas>
+      </div>
+
+      <!-- Step-by-Step Latency Breakdown Table -->
+      <div class="steps-table-box">
+        <table class="steps-table">
+          <thead>
+            <tr>
+              <th>Target</th>
+              <th>Latency (&Delta;t)</th>
+              <th>Cumulative</th>
+              <th>Errors</th>
+            </tr>
+          </thead>
+          <tbody id="modalStepsTbody">
+            <!-- Injected by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-anonymity-notice">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Your name will be salted and converted to an anonymous SHA-256 hash before saving. No raw personal identity is ever retained.</span>
+      </div>
+
+      <div class="modal-actions">
+        <button id="nextRunBtn" class="btn-secondary">New Run / Next Range</button>
+        <button id="submitResultsBtn" class="btn-primary">Submit Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div id="toastNotification" class="toast"></div>
+
+  <!-- Scripts -->
+  <script src="/static/js/audio.js"></script>
+  <script src="/static/js/layout.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+

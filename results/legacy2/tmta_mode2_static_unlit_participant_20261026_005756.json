@@ -1,0 +1,326 @@
+{
+  "experiment": "TMT-A Spatial Memory & Visual Marking Decomposition",
+  "task_type": "TMT-A",
+  "mode": 2,
+  "mode_key": "static_unlit",
+  "mode_title": "Mode 2: Static & Unlit (Spatial Memory Only)",
+  "mode_hypothesis": "Spatial memory active without bottom-up pop-out (moderate decrease in latency due to layout familiarity)",
+  "visual_marking_active": false,
+  "layout_shuffle_mode": "none",
+  "participant_id": "participant",
+  "seed": 282181,
+  "timestamp": "2026-10-26T00:56:52.131248",
+  "total_duration_ms": 64159.64,
+  "mean_step_time_ms": 2566.39,
+  "median_step_time_ms": 1479.21,
+  "min_step_time_ms": 360.86,
+  "max_step_time_ms": 10624.13,
+  "total_errors": 1,
+  "completed_targets_count": 25,
+  "step_times_ms": [
+    1023.35,
+    1712.3,
+    1312.12,
+    407.76,
+    2935.88,
+    2296.13,
+    896.07,
+    1287.76,
+    360.86,
+    1479.21,
+    1543.99,
+    3695.9,
+    10624.13,
+    5536.06,
+    8591.96,
+    719.99,
+    2687.99,
+    4959.87,
+    1024.06,
+    3264.15,
+    672.02,
+    695.96,
+    5016.04,
+    848.0,
+    568.07
+  ],
+  "steps": [
+    {
+      "target": "1",
+      "target_num": 1,
+      "step_time_ms": 1023.35,
+      "cumulative_time_ms": 1023.35,
+      "errors_in_step": 0
+    },
+    {
+      "target": "2",
+      "target_num": 2,
+      "step_time_ms": 1712.3,
+      "cumulative_time_ms": 2735.66,
+      "errors_in_step": 0
+    },
+    {
+      "target": "3",
+      "target_num": 3,
+      "step_time_ms": 1312.12,
+      "cumulative_time_ms": 4047.78,
+      "errors_in_step": 0
+    },
+    {
+      "target": "4",
+      "target_num": 4,
+      "step_time_ms": 407.76,
+      "cumulative_time_ms": 4455.54,
+      "errors_in_step": 0
+    },
+    {
+      "target": "5",
+      "target_num": 5,
+      "step_time_ms": 2935.88,
+      "cumulative_time_ms": 7391.42,
+      "errors_in_step": 0
+    },
+    {
+      "target": "6",
+      "target_num": 6,
+      "step_time_ms": 2296.13,
+      "cumulative_time_ms": 9687.55,
+      "errors_in_step": 0
+    },
+    {
+      "target": "7",
+      "target_num": 7,
+      "step_time_ms": 896.07,
+      "cumulative_time_ms": 10583.62,
+      "errors_in_step": 0
+    },
+    {
+      "target": "8",
+      "target_num": 8,
+      "step_time_ms": 1287.76,
+      "cumulative_time_ms": 11871.38,
+      "errors_in_step": 0
+    },
+    {
+      "target": "9",
+      "target_num": 9,
+      "step_time_ms": 360.86,
+      "cumulative_time_ms": 12232.24,
+      "errors_in_step": 0
+    },
+    {
+      "target": "10",
+      "target_num": 10,
+      "step_time_ms": 1479.21,
+      "cumulative_time_ms": 13711.45,
+      "errors_in_step": 0
+    },
+    {
+      "target": "11",
+      "target_num": 11,
+      "step_time_ms": 1543.99,
+      "cumulative_time_ms": 15255.44,
+      "errors_in_step": 0
+    },
+    {
+      "target": "12",
+      "target_num": 12,
+      "step_time_ms": 3695.9,
+      "cumulative_time_ms": 18951.33,
+      "errors_in_step": 0
+    },
+    {
+      "target": "13",
+      "target_num": 13,
+      "step_time_ms": 10624.13,
+      "cumulative_time_ms": 29575.47,
+      "errors_in_step": 0
+    },
+    {
+      "target": "14",
+      "target_num": 14,
+      "step_time_ms": 5536.06,
+      "cumulative_time_ms": 35111.53,
+      "errors_in_step": 0
+    },
+    {
+      "target": "15",
+      "target_num": 15,
+      "step_time_ms": 8591.96,
+      "cumulative_time_ms": 43703.49,
+      "errors_in_step": 0
+    },
+    {
+      "target": "16",
+      "target_num": 16,
+      "step_time_ms": 719.99,
+      "cumulative_time_ms": 44423.48,
+      "errors_in_step": 0
+    },
+    {
+      "target": "17",
+      "target_num": 17,
+      "step_time_ms": 2687.99,
+      "cumulative_time_ms": 47111.47,
+      "errors_in_step": 0
+    },
+    {
+      "target": "18",
+      "target_num": 18,
+      "step_time_ms": 4959.87,
+      "cumulative_time_ms": 52071.34,
+      "errors_in_step": 0
+    },
+    {
+      "target": "19",
+      "target_num": 19,
+      "step_time_ms": 1024.06,
+      "cumulative_time_ms": 53095.4,
+      "errors_in_step": 0
+    },
+    {
+      "target": "20",
+      "target_num": 20,
+      "step_time_ms": 3264.15,
+      "cumulative_time_ms": 56359.55,
+      "errors_in_step": 0
+    },
+    {
+      "target": "21",
+      "target_num": 21,
+      "step_time_ms": 672.02,
+      "cumulative_time_ms": 57031.57,
+      "errors_in_step": 0
+    },
+    {
+      "target": "22",
+      "target_num": 22,
+      "step_time_ms": 695.96,
+      "cumulative_time_ms": 57727.53,
+      "errors_in_step": 0
+    },
+    {
+      "target": "23",
+      "target_num": 23,
+      "step_time_ms": 5016.04,
+      "cumulative_time_ms": 62743.57,
+      "errors_in_step": 1
+    },
+    {
+      "target": "24",
+      "target_num": 24,
+      "step_time_ms": 848.0,
+      "cumulative_time_ms": 63591.57,
+      "errors_in_step": 0
+    },
+    {
+      "target": "25",
+      "target_num": 25,
+      "step_time_ms": 568.07,
+      "cumulative_time_ms": 64159.64,
+      "errors_in_step": 0
+    }
+  ],
+  "initial_layout": {
+    "1": [
+      58.73,
+      54.52
+    ],
+    "2": [
+      86.04,
+      71.95
+    ],
+    "3": [
+      18.77,
+      74.61
+    ],
+    "4": [
+      6.45,
+      73.3
+    ],
+    "5": [
+      28.36,
+      41.45
+    ],
+    "6": [
+      53.59,
+      74.68
+    ],
+    "7": [
+      79.16,
+      48.18
+    ],
+    "8": [
+      48.88,
+      25.3
+    ],
+    "9": [
+      60.21,
+      26.34
+    ],
+    "10": [
+      93.26,
+      83.02
+    ],
+    "11": [
+      80.98,
+      20.41
+    ],
+    "12": [
+      45.93,
+      35.41
+    ],
+    "13": [
+      44.63,
+      11.33
+    ],
+    "14": [
+      65.42,
+      66.8
+    ],
+    "15": [
+      44.43,
+      66.04
+    ],
+    "16": [
+      40.46,
+      80.44
+    ],
+    "17": [
+      13.34,
+      46.66
+    ],
+    "18": [
+      26.45,
+      10.8
+    ],
+    "19": [
+      8.57,
+      33.38
+    ],
+    "20": [
+      83.6,
+      41.15
+    ],
+    "21": [
+      26.31,
+      31.1
+    ],
+    "22": [
+      58.28,
+      34.01
+    ],
+    "23": [
+      74.95,
+      93.45
+    ],
+    "24": [
+      49.68,
+      56.96
+    ],
+    "25": [
+      70.42,
+      74.82
+    ]
+  }
+}

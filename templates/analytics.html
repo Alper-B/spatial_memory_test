@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TMT-A Spatial Memory Analytics & Comparison</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .comparison-chart-wrapper {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      position: relative;
+      height: 380px;
+      margin-bottom: 20px;
+    }
+    #comparisonCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .condition-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .condition-stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 5px solid var(--accent-color, #3b82f6);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .condition-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .condition-slope {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-color, #3b82f6);
+      margin: 6px 0;
+    }
+    .condition-runs {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .condition-hypothesis {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+    .legend-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 10px;
+      justify-content: center;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .legend-color-box {
+      width: 14px;
+      height: 4px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-title-group">
+        <div class="header-icon">A</div>
+        <div>
+          <h1 class="header-title">TMT-A Experimental Analytics</h1>
+          <p class="header-subtitle">Multi-Condition Latency Curves & Fitted Trendlines</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="/" class="nav-btn">Back to Experiment</a>
+        <a href="/analytics" class="nav-btn active">Analytics & Trends</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Condition Summary Cards -->
+    <section class="condition-cards-grid" id="conditionCardsGrid">
+      <!-- Populated dynamically -->
+    </section>
+
+    <!-- Main Comparison Chart Card -->
+    <section class="card" style="margin-bottom: 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div>
+          <h2 class="card-title">Latency Progression & Trendline Slopes Across Modes</h2>
+          <p class="card-subtitle">Empirical Step Latencies (&Delta;t per target) with linear regression trendlines</p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a href="/api/export_zip" class="btn-primary" style="font-size: 12px; padding: 7px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="Download all submitted experiment JSONs in a single zip archive">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export All (.zip)
+          </a>
+          <button id="refreshAnalyticsBtn" class="btn-secondary" style="font-size: 12px; padding: 6px 12px;">
+            Refresh Data
+          </button>
+        </div>
+      </div>
+
+      <div class="comparison-chart-wrapper">
+        <canvas id="comparisonCanvas"></canvas>
+      </div>
+
+      <div class="legend-list" id="chartLegendList">
+        <!-- Injected by JS -->
+      </div>
+    </section>
+
+    <!-- Submissions History Table -->
+    <section class="card">
+      <h2 class="card-title">Anonymized Submission Records</h2>
+      <p class="card-subtitle">All submitted sessions stored securely with SHA-256 hashed participant IDs</p>
+
+      <div class="submissions-table-wrap">
+        <table class="steps-table">
+          <thead>
+            <tr>
+              <th>Anonymous ID</th>
+              <th>Mode</th>
+              <th>Target Range</th>
+              <th>Total Time</th>
+              <th>Mean Latency</th>
+              <th>Errors</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="submissionsTableBody">
+            <tr>
+              <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 20px;">
+                Loading recorded submissions...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const COLORS = {
+      1: "#22c55e",
+      2: "#f59e0b",
+      3: "#3b82f6",
+      4: "#ef4444"
+    };
+
+    async function loadAnalytics() {
+      try {
+        const [compRes, subRes] = await Promise.all([
+          fetch("/api/comparison"),
+          fetch("/api/submissions")
+        ]);
+
+        const compData = await compRes.json();
+        const subData = await subRes.json();
+
+        if (compData.status === "success") {
+          renderConditionCards(compData.modes);
+          renderComparisonChart(compData.modes);
+        }
+
+        if (subData.status === "success") {
+          renderSubmissionsTable(subData.submissions);
+        }
+      } catch (err) {
+        console.error("Failed to load analytics:", err);
+      }
+    }
+
+    function renderConditionCards(modes) {
+      const grid = document.getElementById("conditionCardsGrid");
+      grid.innerHTML = "";
+
+      for (let m = 1; m <= 4; m++) {
+        const d = modes[m];
+        if (!d) continue;
+
+        const card = document.createElement("div");
+        card.className = "condition-stat-card";
+        card.style.setProperty("--accent-color", COLORS[m]);
+
+        const slopeStr = d.slope !== undefined ? `${d.slope > 0 ? "+" : ""}${d.slope.toFixed(1)} ms/target` : "N/A";
+        const runText = d.has_data ? `${d.runs_count} runs analyzed` : "Theoretical Model";
+
+        card.innerHTML = `
+          <div class="condition-title">
+            <span>${d.short_name}</span>
+            <span class="condition-runs">${runText}</span>
+          </div>
+          <div class="condition-slope">${slopeStr}</div>
+          <div class="condition-hypothesis">${d.hypothesis}</div>
+        `;
+        grid.appendChild(card);
+      }
+    }
+
+    function renderComparisonChart(modes) {
+      const canvas = document.getElementById("comparisonCanvas");
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+
+      const rect = canvas.parentElement.getBoundingClientRect();
+      const w = rect.width - 32;
+      const h = rect.height - 32;
+
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.resetTransform?.();
+      ctx.scale(dpr, dpr);
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Collect all values to get min/max
+      let allY = [];
+      let maxSteps = 6;
+      for (let m = 1; m <= 4; m++) {
+        const d = modes[m];
+        if (d && d.mean_latencies) {
+          allY.push(...d.mean_latencies);
+          if (d.trend_line) allY.push(...d.trend_line);
+          maxSteps = Math.max(maxSteps, d.steps.length);
+        }
+      }
+
+      if (allY.length === 0) return;
+
+      const minY = Math.max(0, Math.min(...allY) * 0.85);
+      const maxY = Math.max(...allY) * 1.15;
+
+      const margin = { top: 25, right: 30, bottom: 40, left: 65 };
+      const plotW = w - margin.left - margin.right;
+      const plotH = h - margin.top - margin.bottom;
+
+      // Draw Grid & Y-Ticks
+      ctx.strokeStyle = "rgba(75, 85, 99, 0.25)";
+      ctx.lineWidth = 1;
+      ctx.fillStyle = "#94a3b8";
+      ctx.font = "11px monospace";
+      ctx.textAlign = "right";
+
+      const yTicks = 5;
+      for (let i = 0; i <= yTicks; i++) {
+        const val = minY + (i / yTicks) * (maxY - minY);
+        const y = margin.top + plotH - (i / yTicks) * plotH;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, y);
+        ctx.lineTo(margin.left + plotW, y);
+        ctx.stroke();
+        ctx.fillText(`${Math.round(val)}ms`, margin.left - 8, y + 4);
+      }
+
+      // X-Ticks
+      ctx.textAlign = "center";
+      for (let s = 1; s <= maxSteps; s++) {
+        const x = margin.left + ((s - 1) / (maxSteps - 1)) * plotW;
+        ctx.fillText(`Target ${s}`, x, margin.top + plotH + 20);
+      }
+
+      // Plot each mode
+      for (let m = 1; m <= 4; m++) {
+        const d = modes[m];
+        if (!d || !d.mean_latencies || d.mean_latencies.length === 0) continue;
+
+        const steps = d.steps;
+        const color = COLORS[m];
+
+        // 1. Empirical points
+        const points = steps.map((s, idx) => {
+          const val = d.mean_latencies[idx];
+          const x = margin.left + ((s - 1) / (maxSteps - 1)) * plotW;
+          const y = margin.top + plotH - ((val - minY) / (maxY - minY)) * plotH;
+          return [x, y];
+        });
+
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        points.forEach(([x, y], idx) => {
+          if (idx === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+
+        // Markers
+        points.forEach(([x, y]) => {
+          ctx.beginPath();
+          ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+          ctx.strokeStyle = "#0b0f19";
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        });
+
+        // 2. Trendline (dashed)
+        if (d.trend_line && d.trend_line.length > 1) {
+          const tPoints = steps.map((s, idx) => {
+            const val = d.trend_line[idx];
+            const x = margin.left + ((s - 1) / (maxSteps - 1)) * plotW;
+            const y = margin.top + plotH - ((val - minY) / (maxY - minY)) * plotH;
+            return [x, y];
+          });
+
+          ctx.beginPath();
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 2.0;
+          ctx.setLineDash([5, 5]);
+          ctx.moveTo(tPoints[0][0], tPoints[0][1]);
+          ctx.lineTo(tPoints[tPoints.length - 1][0], tPoints[tPoints.length - 1][1]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+
+      // Render Legend HTML
+      const legendList = document.getElementById("chartLegendList");
+      legendList.innerHTML = "";
+      for (let m = 1; m <= 4; m++) {
+        const d = modes[m];
+        if (!d) continue;
+        const item = document.createElement("div");
+        item.className = "legend-item";
+        item.innerHTML = `
+          <span class="legend-color-box" style="background:${COLORS[m]};"></span>
+          <span>${d.short_name} (${d.slope > 0 ? "+" : ""}${d.slope.toFixed(1)} ms/t)</span>
+        `;
+        legendList.appendChild(item);
+      }
+    }
+
+    function renderSubmissionsTable(subs) {
+      const tbody = document.getElementById("submissionsTableBody");
+      tbody.innerHTML = "";
+
+      if (!subs || subs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 20px;">No submissions recorded yet.</td></tr>`;
+        return;
+      }
+
+      subs.forEach(s => {
+        const tr = document.createElement("tr");
+        const modeBadgeColor = COLORS[s.mode] || "#94a3b8";
+        const dateStr = s.timestamp ? s.timestamp.substring(0, 19).replace("T", " ") : "-";
+
+        tr.innerHTML = `
+          <td><strong style="color:#38bdf8;">${s.anonymous_id || 'Anon'}</strong></td>
+          <td><span style="color:${modeBadgeColor}; font-weight:700;">Mode ${s.mode}</span></td>
+          <td>${s.targets}</td>
+          <td>${s.total_duration_ms ? (s.total_duration_ms / 1000.0).toFixed(2) + 's' : '-'}</td>
+          <td>${s.mean_step_time_ms ? s.mean_step_time_ms.toFixed(1) + ' ms' : '-'}</td>
+          <td style="${s.total_errors > 0 ? 'color:#f87171;' : ''}">${s.total_errors}</td>
+          <td style="color:var(--text-muted);">${dateStr}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById("refreshAnalyticsBtn").addEventListener("click", loadAnalytics);
+    window.addEventListener("resize", loadAnalytics);
+    document.addEventListener("DOMContentLoaded", loadAnalytics);
+  </script>
+</body>
+</html>
+

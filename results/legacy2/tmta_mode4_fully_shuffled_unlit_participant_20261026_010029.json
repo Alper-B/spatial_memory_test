@@ -1,0 +1,326 @@
+{
+  "experiment": "TMT-A Spatial Memory & Visual Marking Decomposition",
+  "task_type": "TMT-A",
+  "mode": 4,
+  "mode_key": "fully_shuffled_unlit",
+  "mode_title": "Mode 4: Fully Shuffled & Unlit (Control / Baseline)",
+  "mode_hypothesis": "Neither spatial memory nor bottom-up attention helps (constant latency / flat horizontal line)",
+  "visual_marking_active": false,
+  "layout_shuffle_mode": "all",
+  "participant_id": "participant",
+  "seed": 463770,
+  "timestamp": "2026-10-26T00:59:13.842862",
+  "total_duration_ms": 75583.89,
+  "mean_step_time_ms": 3023.36,
+  "median_step_time_ms": 2656.08,
+  "min_step_time_ms": 736.07,
+  "max_step_time_ms": 7296.06,
+  "total_errors": 2,
+  "completed_targets_count": 25,
+  "step_times_ms": [
+    2335.9,
+    2687.88,
+    951.96,
+    1704.34,
+    3839.72,
+    1383.93,
+    736.07,
+    2279.93,
+    4760.12,
+    4592.01,
+    1471.94,
+    7296.06,
+    2231.87,
+    3368.08,
+    1511.98,
+    4959.98,
+    2071.94,
+    3136.2,
+    4455.88,
+    2656.08,
+    7239.84,
+    1432.39,
+    2879.7,
+    1832.08,
+    3768.02
+  ],
+  "steps": [
+    {
+      "target": "1",
+      "target_num": 1,
+      "step_time_ms": 2335.9,
+      "cumulative_time_ms": 2335.9,
+      "errors_in_step": 0
+    },
+    {
+      "target": "2",
+      "target_num": 2,
+      "step_time_ms": 2687.88,
+      "cumulative_time_ms": 5023.78,
+      "errors_in_step": 0
+    },
+    {
+      "target": "3",
+      "target_num": 3,
+      "step_time_ms": 951.96,
+      "cumulative_time_ms": 5975.74,
+      "errors_in_step": 0
+    },
+    {
+      "target": "4",
+      "target_num": 4,
+      "step_time_ms": 1704.34,
+      "cumulative_time_ms": 7680.08,
+      "errors_in_step": 0
+    },
+    {
+      "target": "5",
+      "target_num": 5,
+      "step_time_ms": 3839.72,
+      "cumulative_time_ms": 11519.8,
+      "errors_in_step": 0
+    },
+    {
+      "target": "6",
+      "target_num": 6,
+      "step_time_ms": 1383.93,
+      "cumulative_time_ms": 12903.73,
+      "errors_in_step": 0
+    },
+    {
+      "target": "7",
+      "target_num": 7,
+      "step_time_ms": 736.07,
+      "cumulative_time_ms": 13639.8,
+      "errors_in_step": 0
+    },
+    {
+      "target": "8",
+      "target_num": 8,
+      "step_time_ms": 2279.93,
+      "cumulative_time_ms": 15919.73,
+      "errors_in_step": 0
+    },
+    {
+      "target": "9",
+      "target_num": 9,
+      "step_time_ms": 4760.12,
+      "cumulative_time_ms": 20679.85,
+      "errors_in_step": 0
+    },
+    {
+      "target": "10",
+      "target_num": 10,
+      "step_time_ms": 4592.01,
+      "cumulative_time_ms": 25271.86,
+      "errors_in_step": 0
+    },
+    {
+      "target": "11",
+      "target_num": 11,
+      "step_time_ms": 1471.94,
+      "cumulative_time_ms": 26743.79,
+      "errors_in_step": 0
+    },
+    {
+      "target": "12",
+      "target_num": 12,
+      "step_time_ms": 7296.06,
+      "cumulative_time_ms": 34039.85,
+      "errors_in_step": 0
+    },
+    {
+      "target": "13",
+      "target_num": 13,
+      "step_time_ms": 2231.87,
+      "cumulative_time_ms": 36271.72,
+      "errors_in_step": 0
+    },
+    {
+      "target": "14",
+      "target_num": 14,
+      "step_time_ms": 3368.08,
+      "cumulative_time_ms": 39639.8,
+      "errors_in_step": 0
+    },
+    {
+      "target": "15",
+      "target_num": 15,
+      "step_time_ms": 1511.98,
+      "cumulative_time_ms": 41151.78,
+      "errors_in_step": 0
+    },
+    {
+      "target": "16",
+      "target_num": 16,
+      "step_time_ms": 4959.98,
+      "cumulative_time_ms": 46111.76,
+      "errors_in_step": 0
+    },
+    {
+      "target": "17",
+      "target_num": 17,
+      "step_time_ms": 2071.94,
+      "cumulative_time_ms": 48183.7,
+      "errors_in_step": 0
+    },
+    {
+      "target": "18",
+      "target_num": 18,
+      "step_time_ms": 3136.2,
+      "cumulative_time_ms": 51319.9,
+      "errors_in_step": 1
+    },
+    {
+      "target": "19",
+      "target_num": 19,
+      "step_time_ms": 4455.88,
+      "cumulative_time_ms": 55775.78,
+      "errors_in_step": 0
+    },
+    {
+      "target": "20",
+      "target_num": 20,
+      "step_time_ms": 2656.08,
+      "cumulative_time_ms": 58431.86,
+      "errors_in_step": 1
+    },
+    {
+      "target": "21",
+      "target_num": 21,
+      "step_time_ms": 7239.84,
+      "cumulative_time_ms": 65671.7,
+      "errors_in_step": 0
+    },
+    {
+      "target": "22",
+      "target_num": 22,
+      "step_time_ms": 1432.39,
+      "cumulative_time_ms": 67104.09,
+      "errors_in_step": 0
+    },
+    {
+      "target": "23",
+      "target_num": 23,
+      "step_time_ms": 2879.7,
+      "cumulative_time_ms": 69983.79,
+      "errors_in_step": 0
+    },
+    {
+      "target": "24",
+      "target_num": 24,
+      "step_time_ms": 1832.08,
+      "cumulative_time_ms": 71815.87,
+      "errors_in_step": 0
+    },
+    {
+      "target": "25",
+      "target_num": 25,
+      "step_time_ms": 3768.02,
+      "cumulative_time_ms": 75583.89,
+      "errors_in_step": 0
+    }
+  ],
+  "initial_layout": {
+    "1": [
+      85.59,
+      46.14
+    ],
+    "2": [
+      12.26,
+      35.33
+    ],
+    "3": [
+      59.6,
+      27.61
+    ],
+    "4": [
+      14.06,
+      6.63
+    ],
+    "5": [
+      8.51,
+      85.05
+    ],
+    "6": [
+      52.98,
+      34.55
+    ],
+    "7": [
+      57.48,
+      70.52
+    ],
+    "8": [
+      56.26,
+      60.05
+    ],
+    "9": [
+      44.54,
+      33.9
+    ],
+    "10": [
+      12.11,
+      64.31
+    ],
+    "11": [
+      28.22,
+      60.43
+    ],
+    "12": [
+      76.82,
+      25.86
+    ],
+    "13": [
+      21.19,
+      68.83
+    ],
+    "14": [
+      78.53,
+      86.88
+    ],
+    "15": [
+      22.73,
+      8.23
+    ],
+    "16": [
+      72.92,
+      75.43
+    ],
+    "17": [
+      81.14,
+      16.56
+    ],
+    "18": [
+      41.87,
+      62.66
+    ],
+    "19": [
+      67.65,
+      62.92
+    ],
+    "20": [
+      82.18,
+      56.21
+    ],
+    "21": [
+      9.57,
+      24.22
+    ],
+    "22": [
+      33.22,
+      31.58
+    ],
+    "23": [
+      32.83,
+      71.25
+    ],
+    "24": [
+      33.09,
+      45.81
+    ],
+    "25": [
+      73.94,
+      54.57
+    ]
+  }
+}
