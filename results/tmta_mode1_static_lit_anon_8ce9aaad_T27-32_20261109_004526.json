@@ -1,0 +1,122 @@
+{
+  "experiment": "TMT-A Spatial Memory & Visual Marking Decomposition",
+  "task_type": "TMT-A",
+  "mode": 1,
+  "mode_key": "static_lit",
+  "mode_title": "Mode 1: Normal Static & Lit",
+  "mode_hypothesis": "Both spatial memory and bottom-up distractor reduction active (-x*log(x) / steep decrease)",
+  "visual_marking_active": true,
+  "layout_shuffle_mode": "none",
+  "participant_id": "Anon-8CE9AAAD",
+  "anonymous_id": "Anon-8CE9AAAD",
+  "participant_hash": "8ce9aaad2fddb7060c7577b2aa315f31dd8228fd6a8cbf0a53289cdf48a1c281",
+  "seed": null,
+  "start_target": 27,
+  "end_target": 32,
+  "target_count": 6,
+  "targets": [
+    "27",
+    "28",
+    "29",
+    "30",
+    "31",
+    "32"
+  ],
+  "timestamp": "2026-11-09T00:45:17.537Z",
+  "total_duration_ms": 5048.5,
+  "mean_step_time_ms": 841.42,
+  "median_step_time_ms": 791.7,
+  "min_step_time_ms": 432.5,
+  "max_step_time_ms": 1586.3,
+  "total_errors": 0,
+  "completed_targets_count": 6,
+  "step_times_ms": [
+    1586.3,
+    717.5,
+    1040.5,
+    791.7,
+    480.0,
+    432.5
+  ],
+  "steps": [
+    {
+      "target": "27",
+      "target_num": 27,
+      "step_index": 1,
+      "step_time_ms": 1586.3,
+      "cumulative_time_ms": 1586.3,
+      "errors_in_step": 0
+    },
+    {
+      "target": "28",
+      "target_num": 28,
+      "step_index": 2,
+      "step_time_ms": 717.5,
+      "cumulative_time_ms": 2303.8,
+      "errors_in_step": 0
+    },
+    {
+      "target": "29",
+      "target_num": 29,
+      "step_index": 3,
+      "step_time_ms": 1040.5,
+      "cumulative_time_ms": 3344.3,
+      "errors_in_step": 0
+    },
+    {
+      "target": "30",
+      "target_num": 30,
+      "step_index": 4,
+      "step_time_ms": 791.7,
+      "cumulative_time_ms": 4136,
+      "errors_in_step": 0
+    },
+    {
+      "target": "31",
+      "target_num": 31,
+      "step_index": 5,
+      "step_time_ms": 480,
+      "cumulative_time_ms": 4616,
+      "errors_in_step": 0
+    },
+    {
+      "target": "32",
+      "target_num": 32,
+      "step_index": 6,
+      "step_time_ms": 432.5,
+      "cumulative_time_ms": 5048.5,
+      "errors_in_step": 0
+    }
+  ],
+  "initial_layout": {
+    "27": [
+      28.73,
+      86.73
+    ],
+    "28": [
+      36.47,
+      58.37
+    ],
+    "29": [
+      76.31,
+      21.64
+    ],
+    "30": [
+      19.97,
+      46.55
+    ],
+    "31": [
+      56.11,
+      23.19
+    ],
+    "32": [
+      40.1,
+      32.87
+    ]
+  },
+  "canvas_size": {
+    "width": 1312,
+    "height": 680
+  },
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+}
