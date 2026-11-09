@@ -22,6 +22,7 @@ class TMTSpatialMemoryApp {
     this.currentStepIndex = 0; // index in this.targetList
     this.isStarted = false;
     this.isCompleted = false;
+    this.hasSubmitted = false;
 
     // High Precision Timers
     this.startPerfTime = 0;
@@ -142,13 +143,26 @@ class TMTSpatialMemoryApp {
       this.submitBtn.addEventListener("click", () => this.submitResults());
     }
     if (this.nextRunBtn) {
-      this.nextRunBtn.addEventListener("click", () => {
+      this.nextRunBtn.addEventListener("click", async () => {
+        // Automatically save when moving to next if not already submitted
+        if (!this.hasSubmitted && this.isCompleted) {
+          this.nextRunBtn.disabled = true;
+          this.nextRunBtn.textContent = "Saving & Loading Next...";
+          await this.submitResults();
+        }
         this._closeModal();
-        this.fetchNewTargetRange().then(() => this.resetTest());
+        await this.fetchNewTargetRange();
+        this.resetTest();
       });
     }
     if (this.closeModalBtn) {
-      this.closeModalBtn.addEventListener("click", () => this._closeModal());
+      this.closeModalBtn.addEventListener("click", async () => {
+        // Automatically save on modal close as well
+        if (!this.hasSubmitted && this.isCompleted) {
+          await this.submitResults();
+        }
+        this._closeModal();
+      });
     }
   }
 
@@ -295,6 +309,12 @@ class TMTSpatialMemoryApp {
     this.stepTimerEl.textContent = "0.00s";
     this.totalTimerEl.textContent = "0.00s";
     this.errorsEl.textContent = "0";
+
+    this.hasSubmitted = false;
+    if (this.nextRunBtn) {
+      this.nextRunBtn.disabled = false;
+      this.nextRunBtn.textContent = "Save & Move to Next \u2192";
+    }
 
     const nextT = this.targetList && this.targetList.length > 0 ? this.targetList[0] : "-";
     this.nextTargetEl.textContent = nextT;
@@ -532,6 +552,25 @@ class TMTSpatialMemoryApp {
   }
 
   _openModal(totalDurationMs) {
+    this.hasSubmitted = false;
+
+    if (this.nextRunBtn) {
+      this.nextRunBtn.disabled = false;
+      this.nextRunBtn.textContent = "Save & Move to Next \u2192";
+    }
+
+    if (this.submitBtn) {
+      this.submitBtn.disabled = false;
+      this.submitBtn.textContent = "Save Now";
+      this.submitBtn.classList.remove("btn-primary");
+      this.submitBtn.classList.add("btn-secondary");
+    }
+
+    const saveStatusEl = document.getElementById("modalSaveStatus");
+    if (saveStatusEl) {
+      saveStatusEl.style.display = "none";
+    }
+
     document.getElementById("modalTotalTime").textContent = `${(totalDurationMs / 1000.0).toFixed(2)}s`;
 
     const meanMs =
@@ -676,10 +715,15 @@ class TMTSpatialMemoryApp {
   }
 
   async submitResults() {
+    if (this.hasSubmitted) return true;
+    if (!this.stepTimesMs || this.stepTimesMs.length === 0) return false;
+
     const rawName = (this.participantInput?.value || "").trim() || "anonymous";
 
-    this.submitBtn.disabled = true;
-    this.submitBtn.textContent = "Submitting & Hashing...";
+    if (this.submitBtn) {
+      this.submitBtn.disabled = true;
+      this.submitBtn.textContent = "Saving...";
+    }
 
     const payload = {
       name: rawName,
@@ -706,20 +750,38 @@ class TMTSpatialMemoryApp {
 
       const data = await res.json();
       if (data.status === "success") {
+        this.hasSubmitted = true;
         this._showToast(`Saved! Anonymized ID: ${data.anonymous_id}`, "success");
-        this.submitBtn.textContent = "Saved Successfully";
-        this.submitBtn.classList.remove("btn-primary");
-        this.submitBtn.classList.add("btn-secondary");
+        if (this.submitBtn) {
+          this.submitBtn.textContent = "Saved Successfully ✓";
+          this.submitBtn.classList.remove("btn-primary");
+          this.submitBtn.classList.add("btn-secondary");
+          this.submitBtn.disabled = true;
+        }
+        if (this.nextRunBtn) {
+          this.nextRunBtn.textContent = "Move to Next \u2192";
+        }
+        const saveStatusEl = document.getElementById("modalSaveStatus");
+        if (saveStatusEl) {
+          saveStatusEl.style.display = "inline-flex";
+        }
+        return true;
       } else {
         this._showToast(`Submission failed: ${data.message}`, "error");
-        this.submitBtn.disabled = false;
-        this.submitBtn.textContent = "Try Again";
+        if (this.submitBtn) {
+          this.submitBtn.disabled = false;
+          this.submitBtn.textContent = "Try Again";
+        }
+        return false;
       }
     } catch (err) {
       console.error("Submit error:", err);
       this._showToast("Network error submitting results", "error");
-      this.submitBtn.disabled = false;
-      this.submitBtn.textContent = "Try Again";
+      if (this.submitBtn) {
+        this.submitBtn.disabled = false;
+        this.submitBtn.textContent = "Try Again";
+      }
+      return false;
     }
   }
 

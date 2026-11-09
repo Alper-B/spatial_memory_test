@@ -218,8 +218,12 @@
       </div>
 
       <div class="modal-actions">
-        <button id="nextRunBtn" class="btn-secondary">New Run / Next Range</button>
-        <button id="submitResultsBtn" class="btn-primary">Submit Results</button>
+        <div id="modalSaveStatus" style="display:none; margin-right:auto; font-size:12px; font-weight:700; color:#4ade80; align-items:center; gap:6px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Saved to Server</span>
+        </div>
+        <button id="nextRunBtn" class="btn-primary" style="font-size: 14px; padding: 10px 22px;">Save & Move to Next &rarr;</button>
+        <button id="submitResultsBtn" class="btn-secondary" style="font-size: 13px; padding: 10px 16px;">Save Now</button>
       </div>
     </div>
   </div>
