@@ -14,8 +14,8 @@ class TMTSpatialMemoryApp {
     this.activeMode = 1;
     this.targetList = [];
     this.startTarget = 1;
-    this.endTarget = 6;
-    this.targetCount = 6;
+    this.endTarget = 10;
+    this.targetCount = 10;
     this.layout = {}; // target -> [pctX, pctY]
     this.initialLayout = {};
 
@@ -78,7 +78,7 @@ class TMTSpatialMemoryApp {
         this.activeMode = this.serverConfig.default_mode || 1;
       }
 
-      // Check URL query parameters (e.g. ?mode=2&name=ParticipantA&count=6)
+      // Check URL query parameters (e.g. ?mode=2&name=ParticipantA&count=10)
       const urlParams = new URLSearchParams(window.location.search);
       const paramMode = parseInt(urlParams.get("mode"), 10);
       if ([1, 2, 3, 4].includes(paramMode)) {
@@ -97,10 +97,10 @@ class TMTSpatialMemoryApp {
     } catch (err) {
       console.error("Initialization error:", err);
       // Fallback defaults
-      this.targetList = ["10", "11", "12", "13", "14", "15"];
+      this.targetList = ["10", "11", "12", "13", "14", "15", "16", "17", "18", "19"];
       this.startTarget = 10;
-      this.endTarget = 15;
-      this.targetCount = 6;
+      this.endTarget = 19;
+      this.targetCount = 10;
       this._updateTargetRangeIndicators();
       this._setupLayout();
     }

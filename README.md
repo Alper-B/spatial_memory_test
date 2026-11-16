@@ -52,7 +52,7 @@ SERVER_PORT=5000
 DEBUG=False
 
 # Target Sequence & Range
-TARGET_COUNT=6
+TARGET_COUNT=10
 TARGET_RANGE_MIN=10
 TARGET_RANGE_MAX=99
 RANDOMIZE_RANGE_EACH_RUN=true
@@ -67,7 +67,7 @@ RESULTS_DIR=results
 HASH_SALT=tmta_spatial_memory_salt_2026
 ```
 
-- When `TARGET_COUNT=6` and `RANDOMIZE_RANGE_EACH_RUN=true`, each run chooses a random starting point in `[10, 94]`, yielding sequences like `21..26`, `54..59`, or `81..86`.
+- When `TARGET_COUNT=10` and `RANDOMIZE_RANGE_EACH_RUN=true`, each run chooses a random starting point in `[10, 90]`, yielding sequences like `21..30`, `54..63`, or `81..90`.
 - The participant's name is hashed with `SHA-256(name.lower() + ":" + HASH_SALT)` to create an anonymous ID (e.g., `Anon-BD63B068`).
 
 ---

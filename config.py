@@ -60,9 +60,9 @@ class ExperimentConfig:
     @classmethod
     def target_count(cls) -> int:
         try:
-            return max(2, min(90, int(os.getenv("TARGET_COUNT", "6"))))
+            return max(2, min(90, int(os.getenv("TARGET_COUNT", "10"))))
         except ValueError:
-            return 6
+            return 10
 
     @classmethod
     def target_range_min(cls) -> int:
@@ -129,7 +129,7 @@ def generate_target_range(
 ) -> Tuple[int, int, int, List[str]]:
     """
     Generates a target sequence based on .env rules.
-    e.g. count=6, min=10, max=99 -> start randomly in [10, 94], end = start + 5.
+    e.g. count=10, min=10, max=99 -> start randomly in [10, 90], end = start + 9.
     Returns:
         (start_target, end_target, count, target_list_as_strings)
     """

@@ -81,8 +81,8 @@ def get_config():
 def api_new_target_range():
     """
     Generates a new target range according to .env parameters.
-    e.g., target_count=6, min=10, max=99 -> start randomly in [10, 94], end = start + 5.
-    Query params can optionally override defaults: ?count=6&min=10&max=99
+    e.g., target_count=10, min=10, max=99 -> start randomly in [10, 90], end = start + 9.
+    Query params can optionally override defaults: ?count=10&min=10&max=99
     """
     count = request.args.get("count", type=int)
     min_val = request.args.get("min", type=int)
