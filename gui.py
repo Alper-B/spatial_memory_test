@@ -566,7 +566,31 @@ class TMTASpatialMemoryApp:
         btn_row = tk.Frame(win, bg="#18181b", pady=6)
         btn_row.pack(fill=tk.X, padx=12)
         ttk.Button(btn_row, text="📊 Open All-Modes Comparison", command=self._open_comparison_window).pack(side=tk.LEFT, padx=6)
-        ttk.Button(btn_row, text="Close", command=win.destroy).pack(side=tk.RIGHT, padx=6)
+
+        def _discard_and_close():
+            try:
+                p = Path(json_path)
+                if p.exists():
+                    p.unlink()
+            except Exception:
+                pass
+            win.destroy()
+
+        tk.Button(
+            btn_row,
+            text="✕ Discard (Do Not Save)",
+            command=_discard_and_close,
+            bg="#dc2626",
+            fg="white",
+            activebackground="#b91c1c",
+            activeforeground="white",
+            font=("Segoe UI", 9, "bold"),
+            relief=tk.FLAT,
+            padx=8,
+            pady=4,
+            cursor="hand2",
+        ).pack(side=tk.RIGHT, padx=6)
+        ttk.Button(btn_row, text="Close & Keep", command=win.destroy).pack(side=tk.RIGHT, padx=6)
 
     def _open_comparison_window(self) -> None:
         """Opens a dedicated window plotting historical comparison curves for all 4 modes."""

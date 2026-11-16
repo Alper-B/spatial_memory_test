@@ -26,7 +26,8 @@ Anyone can perform the experiment in their browser and submit structured results
 - **Sub-Millisecond Timing:** Uses `window.performance.now()` client-side, eliminating network lag for inter-target click latencies ($\Delta t_k$).
 - **Native Web Audio API:** 1150 Hz confirmation beep for correct clicks, 380 Hz error blip, and completion fanfare.
 - **Dynamic Floor Sprinkling:** Targets are scattered randomly without proximity bias and repositioned dynamically in Modes 3 & 4.
-- **Participant Anonymization:** Participant names are cryptographically hashed on the server with salted SHA-256 (`Anon-XXXXXXXX`). Raw personal names are **never stored** on disk.
+- **Participant Anonymization:** Client IP addresses are cryptographically hashed on the server with salted SHA-256 (`Anon-XXXXXXXX`). Raw IP addresses and personal identities are **never stored** on disk.
+- **Save or Discard Results:** Provides a clear option to discard runs without saving (`Do Not Save` in red) or save to server.
 - **Results Modal & Inline Latency Curve:** Displays instant feedback, step breakdown, and fitted trendline slope after completion.
 - **Analytics Dashboard (`/analytics`):** Real-time comparative latency chart across all 4 modes, trendlines ($ms/target$), and submission history.
 
@@ -68,7 +69,7 @@ HASH_SALT=tmta_spatial_memory_salt_2026
 ```
 
 - When `TARGET_COUNT=10` and `RANDOMIZE_RANGE_EACH_RUN=true`, each run chooses a random starting point in `[10, 90]`, yielding sequences like `21..30`, `54..63`, or `81..90`.
-- The participant's name is hashed with `SHA-256(name.lower() + ":" + HASH_SALT)` to create an anonymous ID (e.g., `Anon-BD63B068`).
+- The participant's IP address is hashed with `SHA-256("ip:" + ip + ":" + HASH_SALT)` to create an anonymous ID (e.g., `Anon-688E5AE5`). Raw IP addresses are never saved.
 
 ---
 

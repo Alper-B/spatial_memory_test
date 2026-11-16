@@ -26,6 +26,7 @@ try:
         ExperimentConfig,
         MODE_SPECS,
         generate_target_range,
+        hash_ip_address,
         hash_participant_name,
     )
     from .layout import SpatialLayoutManager
@@ -35,6 +36,7 @@ except (ImportError, ValueError):
         ExperimentConfig,
         MODE_SPECS,
         generate_target_range,
+        hash_ip_address,
         hash_participant_name,
     )
     from layout import SpatialLayoutManager
@@ -49,6 +51,24 @@ app = Flask(
     static_folder=str(STATIC_DIR),
     static_url_path="/static",
 )
+
+
+def get_client_ip() -> str:
+    """
+    Retrieves the client's IP address from request headers or socket address.
+    Prioritizes Cloudflare (CF-Connecting-IP), reverse proxies (X-Forwarded-For, X-Real-IP),
+    and falls back to remote_addr.
+    """
+    cf_ip = request.headers.get("CF-Connecting-IP")
+    if cf_ip:
+        return cf_ip.strip()
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    if forwarded_for:
+        return forwarded_for.split(",")[0].strip()
+    real_ip = request.headers.get("X-Real-IP")
+    if real_ip:
+        return real_ip.strip()
+    return request.remote_addr or "127.0.0.1"
 
 
 @app.route("/")
@@ -66,14 +86,30 @@ def analytics():
 @app.route("/api/config", methods=["GET"])
 def get_config():
     """
-    Returns the active .env settings and experimental mode specifications
-    to the frontend.
+    Returns the active .env settings, experimental mode specifications,
+    and client anonymous ID hashed from their IP address.
     """
+    client_ip = get_client_ip()
+    full_hash, anon_id = hash_ip_address(client_ip)
     cfg = ExperimentConfig.to_dict()
     return jsonify({
         "status": "success",
         "config": cfg,
         "modes": MODE_SPECS,
+        "anonymous_id": anon_id,
+        "anonymous_hash": full_hash,
+    })
+
+
+@app.route("/api/anonymous_id", methods=["GET"])
+def api_anonymous_id():
+    """Returns the current client's IP-derived anonymous identifier."""
+    client_ip = get_client_ip()
+    full_hash, anon_id = hash_ip_address(client_ip)
+    return jsonify({
+        "status": "success",
+        "anonymous_id": anon_id,
+        "anonymous_hash": full_hash,
     })
 
 
@@ -131,19 +167,16 @@ def api_generate_layout():
 def submit_results():
     """
     Receives experimental metrics from the browser, performs participant anonymization
-    via salted SHA-256, strips all raw personal identity, computes performance statistics,
-    and saves the structured JSON into the results/ folder.
+    via salted SHA-256 hash of their IP address, strips all raw identity,
+    computes performance statistics, and saves the structured JSON into the results/ folder.
     """
     payload = request.get_json(silent=True)
     if not payload:
         return jsonify({"status": "error", "message": "Invalid or missing JSON payload"}), 400
 
-    raw_name = str(payload.get("name", "")).strip()
-    if not raw_name:
-        raw_name = "anonymous"
-
-    # Cryptographically hash participant identity (GDPR / IRB privacy preservation)
-    full_hash, anon_id = hash_participant_name(raw_name)
+    # Cryptographically hash participant identity from IP address (GDPR / IRB privacy preservation)
+    client_ip = payload.get("client_ip") or get_client_ip()
+    full_hash, anon_id = hash_ip_address(client_ip)
 
     mode = int(payload.get("mode", 1))
     if mode not in MODE_SPECS:
@@ -188,7 +221,7 @@ def submit_results():
     filename = f"tmta_mode{mode}_{spec['key']}_{safe_anon_id}_{range_str}_{timestamp_str}.json"
     filepath = DEFAULT_RESULTS_DIR / filename
 
-    # Build clean JSON dataset - STRICTLY NO RAW NAME STORED
+    # Build clean JSON dataset - STRICTLY NO RAW PERSONAL NAME OR RAW IP STORED
     record = {
         "experiment": "TMT-A Spatial Memory & Visual Marking Decomposition",
         "task_type": "TMT-A",
@@ -201,6 +234,7 @@ def submit_results():
         "participant_id": anon_id,
         "anonymous_id": anon_id,
         "participant_hash": full_hash,
+        "ip_hash": full_hash,
         "seed": payload.get("seed"),
         "start_target": start_target,
         "end_target": end_target,
@@ -226,7 +260,7 @@ def submit_results():
 
     return jsonify({
         "status": "success",
-        "message": "Experiment results successfully submitted and anonymized.",
+        "message": "Experiment results successfully submitted and anonymized based on IP.",
         "anonymous_id": anon_id,
         "filename": filename,
         "summary": {

@@ -150,6 +150,22 @@ def generate_target_range(
     return start, end, cnt, targets
 
 
+def hash_ip_address(ip_addr: str, salt: Optional[str] = None) -> Tuple[str, str]:
+    """
+    Cryptographically hashes participant IP address with salted SHA-256 for anonymity and GDPR/IRB compliance.
+    Raw IP address is NEVER stored in the final JSON dataset.
+    Returns:
+        (full_sha256_hash, short_anonymous_id)
+        e.g. ("a1b2c3d4...", "Anon-A1B2C3D4")
+    """
+    clean_ip = (ip_addr or "127.0.0.1").strip()
+    active_salt = salt if salt is not None else ExperimentConfig.hash_salt()
+    salted_string = f"ip:{clean_ip}:{active_salt}".encode("utf-8")
+    full_hash = hashlib.sha256(salted_string).hexdigest()
+    anon_id = f"Anon-{full_hash[:8].upper()}"
+    return full_hash, anon_id
+
+
 def hash_participant_name(name: str, salt: Optional[str] = None) -> Tuple[str, str]:
     """
     Cryptographically hashes participant name with SHA-256 for GDPR/IRB compliance.

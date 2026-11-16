@@ -18,6 +18,7 @@ try:
         MODE_SPECS,
         ExperimentConfig,
         generate_target_range,
+        hash_ip_address,
         hash_participant_name,
         audio_correct_beep,
         audio_error_tone,
@@ -30,6 +31,7 @@ except (ImportError, ValueError):
         MODE_SPECS,
         ExperimentConfig,
         generate_target_range,
+        hash_ip_address,
         hash_participant_name,
         audio_correct_beep,
         audio_error_tone,
@@ -50,20 +52,24 @@ class SpatialMemorySession:
         end_target: Optional[int] = None,
         results_dir: Optional[Path] = None,
         raw_name: Optional[str] = None,
+        ip_address: Optional[str] = None,
     ):
         active_mode = mode if mode is not None else ExperimentConfig.default_mode()
         self.mode = active_mode if active_mode in MODE_SPECS else 1
         self.mode_spec = MODE_SPECS[self.mode]
 
-        # Anonymization / Participant identification
-        if raw_name:
+        # Anonymization / Participant identification (IP-based or named fallback)
+        if ip_address:
+            self.participant_hash, self.anonymous_id = hash_ip_address(ip_address)
+            self.participant_id = self.anonymous_id
+        elif raw_name:
             self.participant_hash, self.anonymous_id = hash_participant_name(raw_name)
             self.participant_id = self.anonymous_id
         elif participant_id:
             self.participant_hash, self.anonymous_id = hash_participant_name(participant_id)
             self.participant_id = self.anonymous_id
         else:
-            self.participant_hash, self.anonymous_id = hash_participant_name("participant")
+            self.participant_hash, self.anonymous_id = hash_ip_address("127.0.0.1")
             self.participant_id = self.anonymous_id
 
         self.seed = seed if seed is not None else random.randint(100000, 999999)
@@ -217,6 +223,7 @@ class SpatialMemorySession:
             "participant_id": self.anonymous_id,
             "anonymous_id": self.anonymous_id,
             "participant_hash": self.participant_hash,
+            "ip_hash": self.participant_hash,
             "seed": self.seed,
             "start_target": self.start_target,
             "end_target": self.end_target,

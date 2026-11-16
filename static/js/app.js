@@ -44,7 +44,8 @@ class TMTSpatialMemoryApp {
     this.overlay = document.getElementById("canvasOverlay");
     this.startBtn = document.getElementById("startTestBtn");
     this.resetBtn = document.getElementById("resetTestBtn");
-    this.participantInput = document.getElementById("participantName");
+    this.anonymousIdEl = document.getElementById("anonymousIdVal");
+    this.anonymousId = "Anon-Loading";
     this.nextTargetEl = document.getElementById("hudNextTarget");
     this.stepTimerEl = document.getElementById("hudStepTimer");
     this.totalTimerEl = document.getElementById("hudTotalTimer");
@@ -56,6 +57,7 @@ class TMTSpatialMemoryApp {
     this.resultsModal = document.getElementById("resultsModal");
     this.submitBtn = document.getElementById("submitResultsBtn");
     this.nextRunBtn = document.getElementById("nextRunBtn");
+    this.discardBtn = document.getElementById("discardResultsBtn");
     this.closeModalBtn = document.getElementById("closeModalBtn");
 
     this._bindEvents();
@@ -76,18 +78,19 @@ class TMTSpatialMemoryApp {
         this.serverConfig = data.config;
         this.modeSpecs = data.modes;
         this.activeMode = this.serverConfig.default_mode || 1;
+        if (data.anonymous_id) {
+          this.anonymousId = data.anonymous_id;
+          if (this.anonymousIdEl) {
+            this.anonymousIdEl.textContent = data.anonymous_id;
+          }
+        }
       }
 
-      // Check URL query parameters (e.g. ?mode=2&name=ParticipantA&count=10)
+      // Check URL query parameters (e.g. ?mode=2&count=10)
       const urlParams = new URLSearchParams(window.location.search);
       const paramMode = parseInt(urlParams.get("mode"), 10);
       if ([1, 2, 3, 4].includes(paramMode)) {
         this.activeMode = paramMode;
-      }
-
-      const paramName = urlParams.get("name") || urlParams.get("participant");
-      if (paramName && this.participantInput) {
-        this.participantInput.value = paramName;
       }
 
       this._updateModeUI(this.activeMode);
@@ -139,27 +142,53 @@ class TMTSpatialMemoryApp {
     this.canvas.addEventListener("pointerdown", (e) => this._handleCanvasClick(e));
 
     // Results Modal actions
-    if (this.submitBtn) {
-      this.submitBtn.addEventListener("click", () => this.submitResults());
+    if (this.discardBtn) {
+      this.discardBtn.addEventListener("click", async () => {
+        if (this.hasSubmitted) {
+          this._showToast("This result was already saved.", "error");
+          this._closeModal();
+          return;
+        }
+        this._closeModal();
+        this._showToast("Result discarded — not saved.", "error");
+        await this.fetchNewTargetRange();
+        this.resetTest();
+      });
     }
+
+    if (this.submitBtn) {
+      this.submitBtn.addEventListener("click", async () => {
+        const ok = await this.submitResults();
+        if (ok && this.discardBtn) {
+          this.discardBtn.disabled = true;
+          this.discardBtn.title = "Result already saved to server";
+        }
+      });
+    }
+
     if (this.nextRunBtn) {
       this.nextRunBtn.addEventListener("click", async () => {
         // Automatically save when moving to next if not already submitted
         if (!this.hasSubmitted && this.isCompleted) {
           this.nextRunBtn.disabled = true;
           this.nextRunBtn.textContent = "Saving & Loading Next...";
-          await this.submitResults();
+          const ok = await this.submitResults();
+          if (!ok) {
+            this.nextRunBtn.disabled = false;
+            this.nextRunBtn.textContent = "Save & Move to Next \u2192";
+            return;
+          }
         }
         this._closeModal();
         await this.fetchNewTargetRange();
         this.resetTest();
       });
     }
+
     if (this.closeModalBtn) {
-      this.closeModalBtn.addEventListener("click", async () => {
-        // Automatically save on modal close as well
+      this.closeModalBtn.addEventListener("click", () => {
         if (!this.hasSubmitted && this.isCompleted) {
-          await this.submitResults();
+          this._showToast("Modal closed without saving.", "error");
         }
         this._closeModal();
       });
@@ -554,6 +583,11 @@ class TMTSpatialMemoryApp {
   _openModal(totalDurationMs) {
     this.hasSubmitted = false;
 
+    if (this.discardBtn) {
+      this.discardBtn.disabled = false;
+      this.discardBtn.title = "Discard this run without saving to server";
+    }
+
     if (this.nextRunBtn) {
       this.nextRunBtn.disabled = false;
       this.nextRunBtn.textContent = "Save & Move to Next \u2192";
@@ -569,6 +603,11 @@ class TMTSpatialMemoryApp {
     const saveStatusEl = document.getElementById("modalSaveStatus");
     if (saveStatusEl) {
       saveStatusEl.style.display = "none";
+    }
+
+    const modalAnonIdEl = document.getElementById("modalAnonIdVal");
+    if (modalAnonIdEl) {
+      modalAnonIdEl.textContent = this.anonymousId;
     }
 
     document.getElementById("modalTotalTime").textContent = `${(totalDurationMs / 1000.0).toFixed(2)}s`;
@@ -718,15 +757,12 @@ class TMTSpatialMemoryApp {
     if (this.hasSubmitted) return true;
     if (!this.stepTimesMs || this.stepTimesMs.length === 0) return false;
 
-    const rawName = (this.participantInput?.value || "").trim() || "anonymous";
-
     if (this.submitBtn) {
       this.submitBtn.disabled = true;
       this.submitBtn.textContent = "Saving...";
     }
 
     const payload = {
-      name: rawName,
       mode: this.activeMode,
       step_times_ms: this.stepTimesMs,
       steps: this.stepRecords,
@@ -751,12 +787,22 @@ class TMTSpatialMemoryApp {
       const data = await res.json();
       if (data.status === "success") {
         this.hasSubmitted = true;
-        this._showToast(`Saved! Anonymized ID: ${data.anonymous_id}`, "success");
+        if (data.anonymous_id) {
+          this.anonymousId = data.anonymous_id;
+          if (this.anonymousIdEl) {
+            this.anonymousIdEl.textContent = data.anonymous_id;
+          }
+        }
+        this._showToast(`Saved! Anonymous ID: ${data.anonymous_id}`, "success");
         if (this.submitBtn) {
           this.submitBtn.textContent = "Saved Successfully ✓";
           this.submitBtn.classList.remove("btn-primary");
           this.submitBtn.classList.add("btn-secondary");
           this.submitBtn.disabled = true;
+        }
+        if (this.discardBtn) {
+          this.discardBtn.disabled = true;
+          this.discardBtn.title = "Result already saved to server";
         }
         if (this.nextRunBtn) {
           this.nextRunBtn.textContent = "Move to Next \u2192";
