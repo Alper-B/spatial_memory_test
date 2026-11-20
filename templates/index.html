@@ -15,10 +15,14 @@
         <div class="header-icon">T</div>
         <div>
           <h1 class="header-title">TMT-A Spatial Memory Experiment</h1>
-          <p class="header-subtitle">Cognitive Decomposition of Spatial Memory & Bottom-Up Visual Marking</p>
+          <p class="header-subtitle">Standardized Protocol &bull; 4 Practice Trials + 16 Randomized Test Rounds</p>
         </div>
       </div>
       <nav class="nav-links">
+        <div class="protocol-badge-header" id="protocolStatusBadge">
+          <span class="status-indicator-dot pulse"></span>
+          <span id="protocolPhaseText">Loading Protocol...</span>
+        </div>
         <a href="/" class="nav-btn active">Experiment</a>
         <a href="/analytics" class="nav-btn">Analytics & Trends</a>
       </nav>
@@ -27,10 +31,10 @@
 
   <main class="container">
 
-    <!-- Participant & Range Control Bar -->
+    <!-- Participant & Protocol Status Bar -->
     <section class="control-bar">
       <div class="participant-box">
-        <span class="participant-label">Anonymous ID:</span>
+        <span class="participant-label">Participant ID:</span>
         <div class="anonymous-id-pill" id="anonymousIdDisplay" title="Hashed based on your IP address with salted SHA-256">
           <span class="status-indicator-dot"></span>
           <span id="anonymousIdVal">Loading...</span>
@@ -41,55 +45,90 @@
         </span>
       </div>
 
+      <div class="session-tracker-box">
+        <span class="session-label">Session:</span>
+        <span id="sessionDisplayId" class="session-id-value">Initializing...</span>
+        <button id="restartSessionBtn" class="restart-session-btn" title="Restart experimental session from beginning">↺ Restart</button>
+      </div>
+
       <div class="target-range-badge">
-        <span class="target-range-label">Active Range:</span>
-        <span id="targetRangeVal" class="target-range-value">Loading...</span>
-        <button id="refreshRangeBtn" class="refresh-range-btn" title="Generate another random target range">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-        </button>
+        <span class="target-range-label">Round Sequence:</span>
+        <span id="targetRangeVal" class="target-range-value">10 &rarr; 19 (10 targets)</span>
       </div>
     </section>
 
-    <!-- Experimental Mode Tabs -->
-    <section class="modes-grid">
+    <!-- Overall Protocol Progress Bar -->
+    <section class="protocol-progress-panel">
+      <div class="protocol-progress-header">
+        <div class="protocol-step-title" id="progressStepTitle">
+          🎓 Practice Phase: Trial 1 of 4 (Mode 1: Normal Static & Lit)
+        </div>
+        <div class="protocol-step-stats" id="progressStepStats">
+          <span id="progressCompletedNum">0</span> / <span id="progressTotalNum">16</span> Rounds Completed
+          (<span id="progressPercentNum">0%</span>)
+        </div>
+      </div>
+      <div class="protocol-track">
+        <div id="protocolProgressBar" class="protocol-fill" style="width: 0%;"></div>
+      </div>
+    </section>
+
+    <!-- Protocol Mode Quota Grid (Locked - Zero Degrees of Freedom) -->
+    <section class="modes-grid protocol-locked">
       <!-- Mode 1 -->
-      <div class="mode-card active" data-mode="1">
+      <div class="mode-card" id="modeCard1" data-mode="1">
         <div class="mode-card-header">
           <span class="mode-card-title"><span class="mode-dot"></span> Mode 1: Normal</span>
           <span class="mode-badge" style="background:#dcfce7; color:#16a34a;">Static + Lit</span>
         </div>
         <p class="mode-desc">Standard TMT-A. Targets light up green with trails. Positions remain static.</p>
-        <p class="mode-hypothesis">Hypothesis: Memory + bottom-up pop-out active (steepest latency drop).</p>
+        <div class="mode-quota-bar">
+          <span class="mode-quota-label">Quota:</span>
+          <span class="mode-quota-count" id="quotaCount1">0 / 4</span>
+          <span class="mode-status-tag" id="statusTag1">Pending</span>
+        </div>
       </div>
 
       <!-- Mode 2 -->
-      <div class="mode-card" data-mode="2">
+      <div class="mode-card" id="modeCard2" data-mode="2">
         <div class="mode-card-header">
           <span class="mode-card-title"><span class="mode-dot"></span> Mode 2: Memory Only</span>
           <span class="mode-badge" style="background:#fef3c7; color:#d97706;">Static + Unlit</span>
         </div>
         <p class="mode-desc">All targets look identical (white). Correct clicks beep. Positions remain static.</p>
-        <p class="mode-hypothesis">Hypothesis: Layout familiarity active without pop-out cues (moderate drop).</p>
+        <div class="mode-quota-bar">
+          <span class="mode-quota-label">Quota:</span>
+          <span class="mode-quota-count" id="quotaCount2">0 / 4</span>
+          <span class="mode-status-tag" id="statusTag2">Pending</span>
+        </div>
       </div>
 
       <!-- Mode 3 -->
-      <div class="mode-card" data-mode="3">
+      <div class="mode-card" id="modeCard3" data-mode="3">
         <div class="mode-card-header">
           <span class="mode-card-title"><span class="mode-dot"></span> Mode 3: Bottom-Up Only</span>
           <span class="mode-badge" style="background:#dbeafe; color:#2563eb;">Shuffled + Lit</span>
         </div>
         <p class="mode-desc">Completed targets stay lit. Uncompleted targets RESHUFFLE after every correct hit.</p>
-        <p class="mode-hypothesis">Hypothesis: Distractor count decreases, memory wiped (linear drop).</p>
+        <div class="mode-quota-bar">
+          <span class="mode-quota-label">Quota:</span>
+          <span class="mode-quota-count" id="quotaCount3">0 / 4</span>
+          <span class="mode-status-tag" id="statusTag3">Pending</span>
+        </div>
       </div>
 
       <!-- Mode 4 -->
-      <div class="mode-card" data-mode="4">
+      <div class="mode-card" id="modeCard4" data-mode="4">
         <div class="mode-card-header">
           <span class="mode-card-title"><span class="mode-dot"></span> Mode 4: Control Baseline</span>
           <span class="mode-badge" style="background:#fee2e2; color:#dc2626;">Fully Shuffled</span>
         </div>
         <p class="mode-desc">ALL targets RESHUFFLE after every click, NONE light up. Beep confirmation.</p>
-        <p class="mode-hypothesis">Hypothesis: Pure visual search baseline (flat constant slope ~0).</p>
+        <div class="mode-quota-bar">
+          <span class="mode-quota-label">Quota:</span>
+          <span class="mode-quota-count" id="quotaCount4">0 / 4</span>
+          <span class="mode-status-tag" id="statusTag4">Pending</span>
+        </div>
       </div>
     </section>
 
@@ -112,11 +151,17 @@
           <span class="hud-label">Errors</span>
           <span id="hudErrors" class="hud-value" style="color:#ef4444;">0</span>
         </div>
+        <div class="hud-item">
+          <span class="hud-label">Round Phase</span>
+          <span id="hudRoundPhase" class="hud-value" style="font-size:13px; color:#38bdf8;">Practice</span>
+        </div>
       </div>
 
       <div class="hud-actions">
-        <button id="startTestBtn" class="btn-primary">START TEST</button>
-        <button id="resetTestBtn" class="btn-secondary" disabled>Reset</button>
+        <button id="startTestBtn" class="btn-primary">START ROUND</button>
+        <button id="resetTestBtn" class="btn-danger-outline" disabled title="Cancelling will require you to repeat this round to fulfill the 16 rounds quota">
+          ✕ Cancel Round
+        </button>
       </div>
     </div>
 
@@ -134,8 +179,10 @@
         <div id="cornerFirstTargetSub" class="corner-badge-sub">Sequence: -- &rarr; --</div>
       </div>
 
+      <!-- Pre-Round Overlay -->
       <div id="canvasOverlay" class="canvas-overlay">
-        <h2 id="overlayModeTitle" class="overlay-title">Ready for Mode 1</h2>
+        <div class="overlay-phase-tag" id="overlayPhaseTag">PRACTICE TRIAL 1 OF 4</div>
+        <h2 id="overlayModeTitle" class="overlay-title">Mode 1: Normal Static & Lit</h2>
         <p id="overlayModeDesc" class="overlay-desc">
           Click the sequential targets in ascending numerical order as quickly and accurately as possible.
         </p>
@@ -147,25 +194,184 @@
           <div id="overlaySequenceText" class="callout-subtext">Sequence: -- to --</div>
         </div>
 
-        <ul class="overlay-rules">
-          <li><strong>Sequential Order:</strong> Look at the "Next Target" counter above and click targets sequentially.</li>
-          <li><strong>Sound Feedback:</strong> Turn on audio to hear confirmation beeps (especially in Unlit modes).</li>
-          <li><strong>No Guessing:</strong> Incorrect clicks register as errors and add search latency.</li>
+        <ul class="overlay-rules" id="overlayRulesList">
+          <li><strong>Ascending Order:</strong> Always click the next target in sequence.</li>
+          <li><strong>Audio Feedback:</strong> Listen for confirmation beeps on correct clicks.</li>
+          <li><strong>Zero Guessing:</strong> Misclicks register as errors and increase latency.</li>
         </ul>
-        <button onclick="document.getElementById('startTestBtn').click()" class="btn-primary" style="padding: 12px 32px; font-size: 16px;">
-          Click Here or Press Start to Begin
-        </button>
+
+        <div class="overlay-btn-group">
+          <button id="overlayStartBtn" class="btn-primary" style="padding: 13px 36px; font-size: 16px; font-weight:700;">
+            Start Round
+          </button>
+          <button id="overlayReviewTutorialBtn" class="btn-secondary" style="padding: 13px 22px; font-size: 14px;">
+            📖 Review Mode Rules
+          </button>
+        </div>
       </div>
     </div>
 
   </main>
 
-  <!-- Results Summary Modal -->
+  <!-- ====================================================================
+       1. MANDATORY TUTORIAL MODAL (Shown before each practice round)
+       ==================================================================== -->
+  <div id="tutorialModal" class="modal-backdrop">
+    <div class="modal-card modal-lg">
+      <div class="tutorial-header">
+        <span class="tutorial-step-badge" id="tutStepBadge">TUTORIAL 1 OF 4</span>
+        <h2 class="tutorial-title" id="tutTitle">Mode 1: Normal Static & Lit</h2>
+        <p class="tutorial-subtitle" id="tutSubtitle">Standard Trail Making Test (Spatial Memory + Visual Marking)</p>
+      </div>
+
+      <div class="tutorial-body">
+        <!-- Visual Behavior Diagram Box -->
+        <div class="tut-visual-card" id="tutVisualCard">
+          <div class="tut-visual-header">
+            <span class="tut-visual-dot"></span>
+            <span>VISUAL BEHAVIOR & TARGET APPEARANCE</span>
+          </div>
+          <div class="tut-visual-content" id="tutVisualContent">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
+
+        <!-- 3-Column Explanation Cards -->
+        <div class="tut-features-grid">
+          <div class="tut-feature-card">
+            <div class="tut-card-icon">🎯</div>
+            <div class="tut-card-title">Your Objective</div>
+            <div class="tut-card-text" id="tutObjectiveText">
+              Find and click targets in sequential ascending numerical order as fast and accurately as possible.
+            </div>
+          </div>
+
+          <div class="tut-feature-card">
+            <div class="tut-card-icon">🧠</div>
+            <div class="tut-card-title">Cognitive Mechanism</div>
+            <div class="tut-card-text" id="tutCognitiveText">
+              In this mode, both spatial memory and bottom-up visual pop-out are active.
+            </div>
+          </div>
+
+          <div class="tut-feature-card">
+            <div class="tut-card-icon">💡</div>
+            <div class="tut-card-title">Pro Strategy</div>
+            <div class="tut-card-text" id="tutStrategyText">
+              Scan ahead while clicking. The green highlights help eliminate already visited locations.
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode Specific Mechanics List -->
+        <div class="tut-rules-box">
+          <div class="tut-rules-title">Key Rules for this Mode:</div>
+          <ul class="tut-rules-list" id="tutRulesList">
+            <!-- Injected by JavaScript -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="tutorial-footer">
+        <span class="tut-mandatory-note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          Mandatory practice trial to familiarize you with this mode before formal testing.
+        </span>
+        <button id="tutProceedBtn" class="btn-primary" style="padding: 12px 30px; font-size: 15px; font-weight:700;">
+          I Understand &bull; Begin Practice Round &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       2. PRACTICE COMPLETE TRANSITION MODAL
+       ==================================================================== -->
+  <div id="practiceCompleteModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header" style="text-align:center; display:block;">
+        <div style="font-size:42px; margin-bottom:8px;">🎉</div>
+        <h2 class="modal-title">Practice Phase Complete!</h2>
+        <p class="modal-subtitle">You have experienced all 4 experimental conditions.</p>
+      </div>
+
+      <div class="practice-summary-content" style="padding: 14px 0;">
+        <p style="color:var(--text-secondary); margin-bottom: 14px; font-size: 14px; line-height: 1.6;">
+          You are now ready to begin the <strong>Formal Experiment</strong>.
+        </p>
+
+        <div class="protocol-rules-card">
+          <div class="protocol-rule-item">
+            <span class="p-num">1</span>
+            <div>
+              <strong>16 Randomized Rounds Total:</strong>
+              <p>You will complete exactly 4 rounds for each of the 4 modes, presented in randomized counterbalanced order to eliminate sequence learning bias.</p>
+            </div>
+          </div>
+
+          <div class="protocol-rule-item">
+            <span class="p-num">2</span>
+            <div>
+              <strong>Cancellation & Repeat Rule:</strong>
+              <p>You may cancel a round if interrupted, but that round will <em>not</em> count. You will be required to repeat that cancelled mode so that your session strictly completes 16 valid runs.</p>
+            </div>
+          </div>
+
+          <div class="protocol-rule-item">
+            <span class="p-num">3</span>
+            <div>
+              <strong>Data Packaging & ZIP Download:</strong>
+              <p>When all 16 rounds are done, your session will automatically compile a <strong>downloadable ZIP file</strong> to send to the researcher.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="justify-content:center;">
+        <button id="beginExperimentBtn" class="btn-primary" style="padding: 14px 38px; font-size: 16px; font-weight:700;">
+          Start 16-Round Formal Experiment &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       3. CANCEL ROUND CONFIRMATION MODAL
+       ==================================================================== -->
+  <div id="cancelConfirmModal" class="modal-backdrop">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" style="color: #ef4444;">⚠️ Cancel This Round?</h2>
+          <p class="modal-subtitle" id="cancelModalSubtitle">Round will be discarded.</p>
+        </div>
+      </div>
+
+      <div style="padding: 16px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+        <p style="margin-bottom: 12px;">
+          This round will <strong style="color:#ef4444;">NOT count</strong> toward your 16 completed rounds.
+        </p>
+        <p style="background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 10px 14px; border-radius: 4px; color: #fca5a5;">
+          You will have to perform another round of <strong id="cancelModalModeName">this mode</strong> to fulfill the experimental protocol.
+        </p>
+      </div>
+
+      <div class="modal-actions" style="justify-content: flex-end; gap: 10px;">
+        <button id="cancelModalResumeBtn" class="btn-secondary">Resume Round</button>
+        <button id="cancelModalConfirmBtn" class="btn-danger">Yes, Discard & Re-queue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       4. ROUND COMPLETED MODAL (Step metrics)
+       ==================================================================== -->
   <div id="resultsModal" class="modal-backdrop">
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <h2 class="modal-title">Test Completed!</h2>
+          <span class="round-status-pill" id="modalRoundBadge">Round 1 of 16 Complete</span>
+          <h2 class="modal-title">Round Results</h2>
           <p id="modalModeTitle" class="modal-subtitle">Mode 1: Normal Static & Lit</p>
         </div>
         <button id="closeModalBtn" class="btn-secondary" style="padding: 6px 12px;">&times;</button>
@@ -211,7 +417,7 @@
 
       <div class="modal-anonymity-notice">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span>Results are recorded under your IP-hashed Anonymous ID: <strong id="modalAnonIdVal" style="color:#38bdf8;">Anon-...</strong>. No personal identity or raw IP is retained.</span>
+        <span>Recorded for Anonymous ID: <strong id="modalAnonIdVal" style="color:#38bdf8;">Anon-...</strong></span>
       </div>
 
       <div class="modal-actions">
@@ -219,12 +425,86 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
           <span>Saved to Server</span>
         </div>
-        <button id="discardResultsBtn" class="btn-danger" style="font-size: 13px; padding: 10px 18px;" title="Discard this run without saving to server">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          Do Not Save
+        <button id="discardResultsBtn" class="btn-danger" style="display:none;">Do Not Save</button>
+        <button id="submitResultsBtn" class="btn-secondary" style="display:none;">Save Now</button>
+        <button id="nextRunBtn" class="btn-primary" style="font-size: 15px; padding: 12px 28px; font-weight:700;">
+          Save & Proceed to Next Round &rarr;
         </button>
-        <button id="submitResultsBtn" class="btn-secondary" style="font-size: 13px; padding: 10px 16px;">Save Now</button>
-        <button id="nextRunBtn" class="btn-primary" style="font-size: 14px; padding: 10px 22px;">Save & Move to Next &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       5. FINAL EXPERIMENT COMPLETION MODAL & ZIP DOWNLOAD
+       ==================================================================== -->
+  <div id="experimentCompleteModal" class="modal-backdrop">
+    <div class="modal-card modal-lg">
+      <div class="completion-banner">
+        <div class="completion-trophy">🏆</div>
+        <h2 class="completion-title">ALL 16 ROUNDS COMPLETED!</h2>
+        <p class="completion-subtitle">Full TMT-A Spatial Memory Protocol Successfully Finished</p>
+      </div>
+
+      <div class="completion-body">
+        <div class="completion-desc-box">
+          <p>
+            Thank you for participating! You have completed all 4 practice trials and all 16 randomized test rounds (4 for each cognitive mode).
+          </p>
+          <p style="margin-top:6px; color:#38bdf8;">
+            All data has been verified and packaged into an exportable ZIP file.
+          </p>
+        </div>
+
+        <!-- Mode Comparison Table -->
+        <div class="completion-table-box">
+          <h3 class="table-heading">Empirical Performance Across Modes (4 Runs Each):</h3>
+          <table class="completion-table">
+            <thead>
+              <tr>
+                <th>Mode Condition</th>
+                <th>Status</th>
+                <th>Mean Latency</th>
+                <th>Slope (&Delta;t / tgt)</th>
+                <th>Errors</th>
+              </tr>
+            </thead>
+            <tbody id="completionTableBody">
+              <!-- Injected by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ZIP Download Callout -->
+        <div class="zip-download-box">
+          <div class="zip-icon-col">
+            <div class="zip-big-icon">📦</div>
+          </div>
+          <div class="zip-info-col">
+            <h4 class="zip-box-title">Download Your Experiment Results (.zip)</h4>
+            <p class="zip-box-desc">
+              Contains all 16 round JSON files, practice trials, full latency curves, and a verified summary report.
+            </p>
+            <div class="zip-action-row">
+              <button id="downloadZipBtn" class="btn-primary btn-pulse-download">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download Results ZIP File
+              </button>
+              <span id="downloadStatusText" class="download-status-ready">Ready for download</span>
+            </div>
+            <p class="zip-instruction-text">
+              * Please download this ZIP file and email or send it directly to your researcher.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="justify-content: space-between; align-items:center;">
+        <a href="/analytics" class="btn-secondary" style="font-size:13px; text-decoration:none;">
+          📊 View Aggregated Research Trends
+        </a>
+        <button id="startFreshSessionBtn" class="btn-secondary" style="font-size:13px;">
+          Start A New Session
+        </button>
       </div>
     </div>
   </div>
@@ -238,4 +518,5 @@
   <script src="/static/js/app.js"></script>
 </body>
 </html>
+
 

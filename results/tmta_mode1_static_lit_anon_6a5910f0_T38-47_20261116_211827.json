@@ -1,0 +1,179 @@
+{
+  "experiment": "TMT-A Spatial Memory & Visual Marking Decomposition",
+  "task_type": "TMT-A",
+  "mode": 1,
+  "mode_key": "static_lit",
+  "mode_title": "Mode 1: Normal Static & Lit",
+  "mode_hypothesis": "Both spatial memory and bottom-up distractor reduction active (-x*log(x) / steep decrease)",
+  "visual_marking_active": true,
+  "layout_shuffle_mode": "none",
+  "participant_id": "Anon-6A5910F0",
+  "anonymous_id": "Anon-6A5910F0",
+  "participant_hash": "6a5910f0d64c847e54049ae7662b24f668c07c61abbad6cc04f2e8a5f9963820",
+  "ip_hash": "6a5910f0d64c847e54049ae7662b24f668c07c61abbad6cc04f2e8a5f9963820",
+  "seed": null,
+  "start_target": 38,
+  "end_target": 47,
+  "target_count": 10,
+  "targets": [
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47"
+  ],
+  "timestamp": "2026-11-16T21:18:15.869Z",
+  "total_duration_ms": 9287.0,
+  "mean_step_time_ms": 928.7,
+  "median_step_time_ms": 565.0,
+  "min_step_time_ms": 318.0,
+  "max_step_time_ms": 3076.0,
+  "total_errors": 1,
+  "completed_targets_count": 10,
+  "step_times_ms": [
+    3076.0,
+    440.0,
+    1217.0,
+    1301.0,
+    379.0,
+    1202.0,
+    565.0,
+    318.0,
+    404.0,
+    385.0
+  ],
+  "steps": [
+    {
+      "target": "38",
+      "target_num": 38,
+      "step_index": 1,
+      "step_time_ms": 3076,
+      "cumulative_time_ms": 3076,
+      "errors_in_step": 0
+    },
+    {
+      "target": "39",
+      "target_num": 39,
+      "step_index": 2,
+      "step_time_ms": 440,
+      "cumulative_time_ms": 3516,
+      "errors_in_step": 0
+    },
+    {
+      "target": "40",
+      "target_num": 40,
+      "step_index": 3,
+      "step_time_ms": 1217,
+      "cumulative_time_ms": 4733,
+      "errors_in_step": 0
+    },
+    {
+      "target": "41",
+      "target_num": 41,
+      "step_index": 4,
+      "step_time_ms": 1301,
+      "cumulative_time_ms": 6034,
+      "errors_in_step": 1
+    },
+    {
+      "target": "42",
+      "target_num": 42,
+      "step_index": 5,
+      "step_time_ms": 379,
+      "cumulative_time_ms": 6413,
+      "errors_in_step": 0
+    },
+    {
+      "target": "43",
+      "target_num": 43,
+      "step_index": 6,
+      "step_time_ms": 1202,
+      "cumulative_time_ms": 7615,
+      "errors_in_step": 0
+    },
+    {
+      "target": "44",
+      "target_num": 44,
+      "step_index": 7,
+      "step_time_ms": 565,
+      "cumulative_time_ms": 8180,
+      "errors_in_step": 0
+    },
+    {
+      "target": "45",
+      "target_num": 45,
+      "step_index": 8,
+      "step_time_ms": 318,
+      "cumulative_time_ms": 8498,
+      "errors_in_step": 0
+    },
+    {
+      "target": "46",
+      "target_num": 46,
+      "step_index": 9,
+      "step_time_ms": 404,
+      "cumulative_time_ms": 8902,
+      "errors_in_step": 0
+    },
+    {
+      "target": "47",
+      "target_num": 47,
+      "step_index": 10,
+      "step_time_ms": 385,
+      "cumulative_time_ms": 9287,
+      "errors_in_step": 0
+    }
+  ],
+  "initial_layout": {
+    "38": [
+      38.71,
+      62.15
+    ],
+    "39": [
+      62.15,
+      86.21
+    ],
+    "40": [
+      55.19,
+      15.91
+    ],
+    "41": [
+      62.79,
+      77.97
+    ],
+    "42": [
+      37.69,
+      42.02
+    ],
+    "43": [
+      11.78,
+      85.06
+    ],
+    "44": [
+      80.85,
+      72.16
+    ],
+    "45": [
+      76.89,
+      38.75
+    ],
+    "46": [
+      47.09,
+      34.59
+    ],
+    "47": [
+      42.89,
+      76.26
+    ]
+  },
+  "canvas_size": {
+    "width": 1312,
+    "height": 680
+  },
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:160.0) Gecko/20100101 Firefox/160.0"
+}

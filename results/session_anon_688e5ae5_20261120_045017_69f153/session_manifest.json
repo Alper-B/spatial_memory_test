@@ -1,0 +1,256 @@
+{
+  "session_id": "session_anon_688e5ae5_20261120_045017_69f153",
+  "participant_id": "Anon-688E5AE5",
+  "participant_hash": "688e5ae52aa061043f8e9f40edddc9d1521a658915a21aa2d8e63a8f8443deac",
+  "created_at": "2026-11-20T04:50:17.845718",
+  "practice_sequence": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "experiment_queue": [
+    3,
+    3,
+    4,
+    4,
+    3,
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    1,
+    2,
+    4,
+    4,
+    1
+  ],
+  "completed_practice": [
+    {
+      "filename": "practice_trial1_mode1_static_lit_anon_688e5ae5_T10-19_20261120_045017.json",
+      "mode": 1,
+      "is_practice": true,
+      "trial_index": 1,
+      "round_number": null,
+      "duration_ms": 8000.0,
+      "mean_step_time_ms": 810.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.846875"
+    },
+    {
+      "filename": "practice_trial2_mode2_static_unlit_anon_688e5ae5_T10-19_20261120_045017.json",
+      "mode": 2,
+      "is_practice": true,
+      "trial_index": 2,
+      "round_number": null,
+      "duration_ms": 8000.0,
+      "mean_step_time_ms": 820.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.857518"
+    },
+    {
+      "filename": "practice_trial3_mode3_shuffled_lit_anon_688e5ae5_T10-19_20261120_045017.json",
+      "mode": 3,
+      "is_practice": true,
+      "trial_index": 3,
+      "round_number": null,
+      "duration_ms": 8000.0,
+      "mean_step_time_ms": 830.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.867087"
+    },
+    {
+      "filename": "practice_trial4_mode4_fully_shuffled_unlit_anon_688e5ae5_T10-19_20261120_045017.json",
+      "mode": 4,
+      "is_practice": true,
+      "trial_index": 4,
+      "round_number": null,
+      "duration_ms": 8000.0,
+      "mean_step_time_ms": 840.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.876516"
+    }
+  ],
+  "completed_rounds": [
+    {
+      "filename": "round_01_mode3_shuffled_lit_anon_688e5ae5_T21-30_20261120_045017.json",
+      "mode": 3,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 1,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 810.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.885621"
+    },
+    {
+      "filename": "round_02_mode3_shuffled_lit_anon_688e5ae5_T22-31_20261120_045017.json",
+      "mode": 3,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 2,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 810.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.896281"
+    },
+    {
+      "filename": "round_03_mode4_fully_shuffled_unlit_anon_688e5ae5_T23-32_20261120_045017.json",
+      "mode": 4,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 3,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 830.0,
+      "errors": 1,
+      "timestamp": "2026-11-20T04:50:17.905666"
+    },
+    {
+      "filename": "round_04_mode4_fully_shuffled_unlit_anon_688e5ae5_T24-33_20261120_045017.json",
+      "mode": 4,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 4,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 830.0,
+      "errors": 1,
+      "timestamp": "2026-11-20T04:50:17.915389"
+    },
+    {
+      "filename": "round_05_mode3_shuffled_lit_anon_688e5ae5_T25-34_20261120_045017.json",
+      "mode": 3,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 5,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 810.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.924897"
+    },
+    {
+      "filename": "round_06_mode1_static_lit_anon_688e5ae5_T26-35_20261120_045017.json",
+      "mode": 1,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 6,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 770.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.934434"
+    },
+    {
+      "filename": "round_07_mode1_static_lit_anon_688e5ae5_T27-36_20261120_045017.json",
+      "mode": 1,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 7,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 770.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.945522"
+    },
+    {
+      "filename": "round_08_mode2_static_unlit_anon_688e5ae5_T28-37_20261120_045017.json",
+      "mode": 2,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 8,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 790.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.954258"
+    },
+    {
+      "filename": "round_09_mode2_static_unlit_anon_688e5ae5_T29-38_20261120_045017.json",
+      "mode": 2,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 9,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 790.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.961707"
+    },
+    {
+      "filename": "round_10_mode2_static_unlit_anon_688e5ae5_T30-39_20261120_045017.json",
+      "mode": 2,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 10,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 790.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.971259"
+    },
+    {
+      "filename": "round_11_mode3_shuffled_lit_anon_688e5ae5_T31-40_20261120_045017.json",
+      "mode": 3,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 11,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 810.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.980758"
+    },
+    {
+      "filename": "round_12_mode1_static_lit_anon_688e5ae5_T32-41_20261120_045017.json",
+      "mode": 1,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 12,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 770.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.989758"
+    },
+    {
+      "filename": "round_13_mode2_static_unlit_anon_688e5ae5_T33-42_20261120_045017.json",
+      "mode": 2,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 13,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 790.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:17.999239"
+    },
+    {
+      "filename": "round_14_mode4_fully_shuffled_unlit_anon_688e5ae5_T34-43_20261120_045018.json",
+      "mode": 4,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 14,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 830.0,
+      "errors": 1,
+      "timestamp": "2026-11-20T04:50:18.007923"
+    },
+    {
+      "filename": "round_15_mode4_fully_shuffled_unlit_anon_688e5ae5_T35-44_20261120_045018.json",
+      "mode": 4,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 15,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 830.0,
+      "errors": 1,
+      "timestamp": "2026-11-20T04:50:18.017422"
+    },
+    {
+      "filename": "round_16_mode1_static_lit_anon_688e5ae5_T36-45_20261120_045018.json",
+      "mode": 1,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 16,
+      "duration_ms": 7500.0,
+      "mean_step_time_ms": 770.0,
+      "errors": 0,
+      "timestamp": "2026-11-20T04:50:18.028266"
+    }
+  ],
+  "cancelled_rounds": [],
+  "updated_at": "2026-11-20T04:50:18.036837"
+}

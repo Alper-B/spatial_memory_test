@@ -1,0 +1,58 @@
+{
+  "session_id": "session_anon_688e5ae5_20261120_045106_5e1f39",
+  "participant_id": "Anon-688E5AE5",
+  "participant_hash": "688e5ae52aa061043f8e9f40edddc9d1521a658915a21aa2d8e63a8f8443deac",
+  "created_at": "2026-11-20T04:51:06.785935",
+  "practice_sequence": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "experiment_queue": [
+    3,
+    2,
+    4,
+    3,
+    1,
+    1,
+    2,
+    3,
+    2,
+    4,
+    3,
+    4,
+    4,
+    1,
+    2,
+    1
+  ],
+  "completed_practice": [
+    {
+      "filename": "practice_trial1_mode1_static_lit_anon_688e5ae5_T18-27_20261120_045130.json",
+      "mode": 1,
+      "is_practice": true,
+      "trial_index": 1,
+      "round_number": null,
+      "duration_ms": 12472.4,
+      "mean_step_time_ms": 1247.24,
+      "errors": 1,
+      "timestamp": "2026-11-20T02:51:17.531Z"
+    }
+  ],
+  "completed_rounds": [
+    {
+      "filename": "round_01_mode3_shuffled_lit_anon_688e5ae5_T65-74_20261120_152620.json",
+      "mode": 3,
+      "is_practice": false,
+      "trial_index": null,
+      "round_number": 1,
+      "duration_ms": 17351.0,
+      "mean_step_time_ms": 1735.1,
+      "errors": 0,
+      "timestamp": "2026-11-20T13:26:03.568Z"
+    }
+  ],
+  "cancelled_rounds": [],
+  "updated_at": "2026-11-20T15:26:20.928675"
+}
